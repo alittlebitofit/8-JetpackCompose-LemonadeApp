@@ -14,8 +14,13 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -26,16 +31,34 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.lemonade.ui.theme.LemonadeTheme
 
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            Scaffold(modifier = Modifier) {innerPadding ->
+            Scaffold(
+                topBar = {
+                    CenterAlignedTopAppBar(
+                        title = {
+                            Text(
+                                stringResource(id = R.string.app_name),
+                                fontWeight = FontWeight.Bold
+                            )
+                        },
+                        colors = TopAppBarDefaults.largeTopAppBarColors(
+                            containerColor = Color(0xfff9e44c)
+                        )
+                    )
+                },
+                modifier = Modifier
+            ) { innerPadding ->
                 LemonadeApp(modifier = Modifier.padding(innerPadding))
             }
 
@@ -103,15 +126,18 @@ fun LemonadeWithButtonAndImage(modifier: Modifier = Modifier) {
                         step = 2
                         tapsRequired = (2..4).random()
                     }
+
                     2 -> {
                         tapsRequired--
                         if (tapsRequired == 0) {
                             step = 3
                         }
                     }
+
                     3 -> {
                         step = 4
                     }
+
                     else -> {
                         step = 1
                     }
@@ -126,6 +152,9 @@ fun LemonadeWithButtonAndImage(modifier: Modifier = Modifier) {
 
         Spacer(modifier = Modifier.height(28.dp))
 
-        Text(text = stringResource(id = instruction))
+        Text(
+            text = stringResource(id = instruction),
+            fontSize = 20.sp
+        )
     }
 }
